@@ -1,10 +1,15 @@
 import express, { request, response } from "express";
-import { PORT, mongoDBURL } from "./config.js";
+//import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import booksRoute from './routes/books.js'
 import cors from 'cors'
+import dotenv from 'dotenv'
 
+
+dotenv.config();
 const app =express();
+
+const PORT = process.env.PORT
 
 //Middleware for parsing request
 app.use(express.json())
@@ -14,12 +19,12 @@ app.use(express.json())
 //optinn 1: allow all origins
 app.use(cors());
 
-//option 2:Allow custom origins
+/* //option 2:Allow custom origins
 app.use(cors({
     origin:'http://localhost:3000/',
     methods:['GET','POST','PUT','DELETE'],
     allowedHeaders:['Content-Type'],
-}))
+})) */
 
 
 //Home page
@@ -33,14 +38,14 @@ app.use('/books', booksRoute);
 
 
 
-mongoose.connect(mongoDBURL)
+mongoose.connect(process.env.mongoDBURL)
 .then(()=>{
 console.log('App connected to mongoDB successfully');
 
 //function to listen to the port
 
 app.listen(PORT,()=>{//callack function
-    console.log(`App is listening to port: ${PORT}`);
+    console.log(`Backend Server is running in port:${PORT} `);
 });
 })
 .catch((error)=>{
