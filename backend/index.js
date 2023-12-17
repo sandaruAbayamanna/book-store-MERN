@@ -1,7 +1,7 @@
 import express, { request, response } from "express";
-//import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import booksRoute from './routes/books.js'
+import userRoute from './routes/users.js'
 import cors from 'cors'
 import dotenv from 'dotenv'
 
@@ -33,7 +33,10 @@ app.get('/', (request,response)=>{
     return response.status(234).send('welcome to MERN')
 })
 
+
+
 app.use('/books', booksRoute);
+app.use('/auth', userRoute)
 
 
 
