@@ -16,10 +16,10 @@ router.post("/register", async(req, res)=>{
 
     const {username,email,password} = req.body;
 
-    // Validate user input
+   /*  // Validate user input
     if (!(email && password && first_name && last_name)) {
         res.status(400).send("All input is required");
-      }
+      } */
 
     // check if user already exist
     // Validate if user exist in our database
