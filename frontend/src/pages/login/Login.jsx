@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 //import './login.css'
 
 import './login-new.css'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
+import { loginCall } from '../../context/apiCalls';
+
 
 
 const Login = () => {
@@ -14,6 +17,10 @@ const Login = () => {
   const [password, setPassword] = useState("")
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
+  //context
+  const {isFetching,dispatch} =useContext(AuthContext)
+  
+
 
   const navigate = useNavigate();
 
@@ -21,7 +28,6 @@ const Login = () => {
     const userInfo = localStorage.getItem("userInfo");
 
     if (userInfo) {
-      //history.push('/')
       navigate('/')
     }
   }, [])
@@ -32,9 +38,11 @@ const Login = () => {
     //prevent refreshing the page after submitting the form
     e.preventDefault()
 
+    loginCall({email,password},dispatch)
+
     //console.log(email,password)
 
-    try {
+    /* try {
 
       const config = {
         headers: {
@@ -57,7 +65,7 @@ const Login = () => {
 
     } catch (error) {
       setError(error.response.data.message)
-    }
+    } */
   }
 
   return (
@@ -111,7 +119,7 @@ const Login = () => {
                 Forgot password?
               </Link>
             </div>
-            <button type="submit" className="btn-submit">
+            <button type="submit" className="btn-submit" disabled={isFetching}>
               Sign in
             </button>
           </form>

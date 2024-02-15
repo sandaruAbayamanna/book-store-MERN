@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import './register.css'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+//import useHistory from 'react-router'
 
 const Register = () => {
 
@@ -10,6 +11,7 @@ const Register = () => {
   const[email, setEmail] = useState("")
   const[password, setPassword] =useState("")
   const[loading, setLoading] =useState(false)
+  //const history = useHistory()
 
 
   const submitHandler=async(e)=>{
@@ -38,6 +40,8 @@ const Register = () => {
 
       setLoading(false);
       localStorage.setItem("userInfo", JSON.stringify(data))
+
+      //history.push('http://localhost:5555/auth/login')
       
     } catch (error) {
       console.log(error)
