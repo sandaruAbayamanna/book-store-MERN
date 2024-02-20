@@ -23,7 +23,7 @@ const CreateBook = () => {
     }
     setLoadig(true);
     axios
-    .post('http://localhost:5555/books', data)
+    .post('/api//books', data)
     .then(()=>{
       setLoadig(false);
       enqueueSnackbar('Book Created Successfully',{variant:'success'})

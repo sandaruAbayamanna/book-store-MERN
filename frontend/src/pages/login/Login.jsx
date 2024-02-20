@@ -5,8 +5,11 @@ import './login-new.css'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
-import { loginCall } from '../../context/apiCalls';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLoginMutation } from '../../slices/usersApiSlice';
+import { setCredentials } from '../../slices/authSlice';
+
+
 
 
 
@@ -17,55 +20,41 @@ const Login = () => {
   const [password, setPassword] = useState("")
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
-  //context
-  const {isFetching,dispatch} =useContext(AuthContext)
+  const [login, {isLoading}] = useLoginMutation();
+
   
 
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
 
-    if (userInfo) {
-      navigate('/')
+  const { userInfo } = useSelector((state) => state.auth);
+
+
+  useEffect(()=>{
+    if(userInfo){
+      navigate('/');
     }
-  }, [])
+  },[navigate,userInfo])
 
+
+  
 
   const submitHandler = async (e) => {
 
     //prevent refreshing the page after submitting the form
-    e.preventDefault()
+    e.preventDefault();
 
-    loginCall({email,password},dispatch)
+    try {
 
-    //console.log(email,password)
+      const res = await login({email,password}).unwrap();
+      dispatch(setCredentials({...res}));
+      navigate('/')
+    } catch (err) {
+      console.log(err?.data?.message || err.error)
+    }
 
-    /* try {
-
-      const config = {
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-      setLoading(true)
-
-      const { data } = await axios.post('http://localhost:5555/auth/login',
-        {
-          email,
-          password,
-        },
-        config
-      )
-
-      console.log(data)
-      localStorage.setItem("userInfo", JSON.stringify(data))
-      setLoading(false)
-
-    } catch (error) {
-      setError(error.response.data.message)
-    } */
+    
   }
 
   return (
@@ -119,7 +108,7 @@ const Login = () => {
                 Forgot password?
               </Link>
             </div>
-            <button type="submit" className="btn-submit" disabled={isFetching}>
+            <button type="submit" className="btn-submit" >
               Sign in
             </button>
           </form>

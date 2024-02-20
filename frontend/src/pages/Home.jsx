@@ -15,7 +15,7 @@ const Home = () => {
   useEffect(() => {
     setLoadig(true);
     axios
-      .get("http://localhost:5555/books")
+      .get("/api/books")
       .then((res) => {
         setBooks(res.data.data);
         setLoadig(false);

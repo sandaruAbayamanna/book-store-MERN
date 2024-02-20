@@ -19,33 +19,6 @@ const Register = () => {
     e.preventDefault();
 
     //console.log(name,email,password)
-
-    
-    try {
-      const config ={
-        headers:{
-          "content-type":"application/json",
-        },
-      }
-      setLoading(true)
-
-      const {data} = await axios.post('http://localhost:5555/auth/register',
-      {
-        username,
-        email,
-        password,
-      },
-      config
-      )
-
-      setLoading(false);
-      localStorage.setItem("userInfo", JSON.stringify(data))
-
-      //history.push('http://localhost:5555/auth/login')
-      
-    } catch (error) {
-      console.log(error)
-    }
     
   }
 
