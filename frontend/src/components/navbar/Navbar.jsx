@@ -1,43 +1,72 @@
 import React, { useState } from 'react'
+import "./navbar.css"
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+//import { useLogoutMutation } from '../../slices/usersApiSlice';
+import { logout } from '../../slices/authSlice';
 
 const Navbar = () => {
-    const [isScrolled, setIsScrolled] = useState(false);
+   
 
-    window.onscroll = () => {
-        setIsScrolled(window.scrollY === 0 ? false : true);
-        return () => (window.onscroll = null);
+    const {userInfo} = useSelector((state)=> state.auth)
 
-    };
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    //const [logoutApiCall] = useLogoutMutation();
 
+    const logoutHandler = async ()=>{
+        try {
+            await dispatch(logout());
+            navigate('/login')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+     
   return (
-    <div className={isScrolled ? "navbar scrolled" : "navbar"}>
+    <div >
       <div className="container">
         <div className="left">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png"
             alt=""
           />
-          <span>Homepage</span>
-          <span>Series</span>
-          <span>Movies</span>
-          <span>New and Popular</span>
-          <span>My List</span>
+          
         </div>
         <div className="right">
-          <Search className="icon" />
-          <span>KID</span>
-          <Notifications className="icon" />
+            {userInfo ? (
+                <>
+          <span>{userInfo.username}</span>
           <img
             src="https://images.pexels.com/photos/6899260/pexels-photo-6899260.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
             alt=""
           />
           <div className="profile">
-            <ArrowDropDown className="icon" />
+            <ArrowDropDownIcon className="icon" />
             <div className="options">
               <span>Settings</span>
-              <span>Logout</span>
+              <span onClick={logoutHandler}>Logout</span>
             </div>
           </div>
+          </>
+          ) :(
+            <>
+            <span>Login</span>
+          <img
+            src="https://images.pexels.com/photos/6899260/pexels-photo-6899260.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+            alt=""
+          />
+          <div className="profile">
+            <ArrowDropDownIcon className="icon" />
+            <div className="options">
+              <span>Settings</span>
+              <span onClick={logoutHandler}>Signiin</span>
+            </div>
+          </div>
+          </>
+          )}
+          
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import EditBook from './pages/EditBook'
 import ShowBook from './pages/ShowBook'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
+import UserHome from './pages/UserHome/UserHome'
 
 
 const App = () => {
@@ -20,7 +21,7 @@ const App = () => {
 
       
       <>
-      <Route path='/' element={<Home />}/>
+      <Route path='/' element={<UserHome />}/>
       <Route path='/register' element={<Register />}/>
       <Route path='/books/create' element={<CreateBook/>}/>
       <Route path='/books/details/:id' element={<ShowBook/>}/>

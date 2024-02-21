@@ -1,11 +1,10 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import Home from "../Home";
+import Navbar from "../../components/navbar/Navbar";
 
 const UserHome = () => {
-
-
-
-/* const navigate = useNavigate();
+  /* const navigate = useNavigate();
 
   useEffect(()=>{
     const userInfo = localStorage.getItem("userInfo");
@@ -18,8 +17,11 @@ const UserHome = () => {
  */
 
   return (
-    <div>UserHome</div>
-  )
-}
+    <div>
+      <Navbar />
+      <Home />
+    </div>
+  );
+};
 
-export default UserHome
+export default UserHome;

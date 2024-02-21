@@ -5,9 +5,10 @@ import Spinner from "../components/Spinner";
 import { MdOutlineAddBox, MdOutlineDelete } from "react-icons/md";
 import BookTable from "../components/home/BookTable";
 import BookCard from "../components/home/BookCard";
+import Navbar from "../components/navbar/Navbar";
 
 const Home = () => {
-  //hooks for books with empty array
+   //hooks for books with empty array
   const [books, setBooks] = useState([]);
   const [loading, setLoadig] = useState(false);
   const [showType, setShowType] = useState("table");
@@ -53,6 +54,6 @@ const Home = () => {
       {loading ? <Spinner /> :showType==='table' ? (<BookTable books={books}/>) :(<BookCard books={books} />)}
     </div>
   );
-};
+}; 
 
 export default Home;
