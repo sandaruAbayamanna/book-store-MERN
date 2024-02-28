@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 //import { useLogoutMutation } from '../../slices/usersApiSlice';
 import { logout } from '../../slices/authSlice';
+import logoImage from '../../assets/BOOKHUB Logo.png';
+
 
 const Navbar = () => {
    
@@ -29,7 +31,7 @@ const Navbar = () => {
       <div className="container">
         <div className="left">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png"
+            src={logoImage}
             alt=""
           />
           
@@ -61,7 +63,7 @@ const Navbar = () => {
             <ArrowDropDownIcon className="icon" />
             <div className="options">
               <span>Settings</span>
-              <span onClick={logoutHandler}>Signiin</span>
+              <span onClick={logoutHandler}>Signin</span>
             </div>
           </div>
           </>

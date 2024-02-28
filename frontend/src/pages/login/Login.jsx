@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoginMutation } from '../../slices/usersApiSlice';
 import { setCredentials } from '../../slices/authSlice';
+import {toast} from 'react-toastify';
+import { enqueueSnackbar, useSnackbar } from 'notistack';
 
 
 
@@ -51,7 +53,8 @@ const Login = () => {
       dispatch(setCredentials({...res}));
       navigate('/')
     } catch (err) {
-      console.log(err?.data?.message || err.error)
+     /* console.log(err?.data?.message || err.error) */
+     enqueueSnackbar('Invalid Email or password',{variant:'error'})
     }
 
     
@@ -65,7 +68,7 @@ const Login = () => {
           <div className="auth-header-logo">
             <img src="" alt="" className="auth-header-logo-img" />
           </div>
-          <h1 className="auth-header-title">Welcome to CDAZZDEV</h1>
+          <h1 className="auth-header-title">Welcome to BookHub</h1>
           <p className="auth-header-subtitle">
             Sign-in to your account and start the adventure
           </p>
@@ -104,7 +107,7 @@ const Login = () => {
               />
             </div>
             <div className="flex-end">
-              <Link to={"/auth/forgot-password"} className="link-end">
+              <Link to={"/auth/forgot-password"} className="link-end" style={{pointerEvents: "none"}}>
                 Forgot password?
               </Link>
             </div>

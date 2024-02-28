@@ -36,6 +36,7 @@ const Register = () => {
       navigate('/')
     } catch (error) {
       console.log(error)
+      enqueueSnackbar('Registration failed..',{variant:'error'})
     }
 
     //console.log(name,email,password)
