@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import Jwt  from 'jsonwebtoken';
 import auth from '../middleware/auth.js'
 
+
 const router = expres.Router();
 
 
@@ -94,6 +95,29 @@ router.post('/login', async (req, res) => {
       return res.status(500).json("Internal Server Error");
     }
   });
+
+  //logout
+  router.post('/logout',auth, async(req, res)=>{
+    try {
+      const userId = req.user._id;
+
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(404).json("User not found");
+      }
+
+      //clear user token
+      user.token = null;
+      await user.save();
+
+      return res.status(200).json("Logout successfull");
+    } catch (error) {
+      console.log(error)
+
+      return res.status(500).json("Internal Server Error")
+    }
+  })
 
 
 //testing the auth middleware(jwt token)

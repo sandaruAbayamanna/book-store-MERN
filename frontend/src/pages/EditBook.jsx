@@ -18,7 +18,7 @@ const EditBook = () => {
   useEffect(()=>{
     setLoadig(true);
     axios
-    .get(`http://localhost:5555/books/${id}`)
+    .get(`/api/books/${id}`)
     .then((res)=>{
       setAuthor(res.data.author)
       setTitle(res.data.title)
@@ -41,7 +41,7 @@ const EditBook = () => {
     };
 
     setLoadig(true);
-    axios.put(`http://localhost:5555/books/${id}`, data)
+    axios.put(`/api/books/${id}`, data)
     .then(()=>{
       setLoadig(false);
       enqueueSnackbar('Book Edited successfully',{variant:'success'})

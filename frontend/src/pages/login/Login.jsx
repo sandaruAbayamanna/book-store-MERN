@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 //import './login.css'
 
 import './login-new.css'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLoginMutation } from '../../slices/usersApiSlice';
+import { setCredentials } from '../../slices/authSlice';
+import {toast} from 'react-toastify';
+import { enqueueSnackbar, useSnackbar } from 'notistack';
+
+
+
 
 
 const Login = () => {
@@ -14,50 +22,42 @@ const Login = () => {
   const [password, setPassword] = useState("")
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [login, {isLoading}] = useLoginMutation();
+
+  
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
 
-    if (userInfo) {
-      //history.push('/')
-      navigate('/')
+  const { userInfo } = useSelector((state) => state.auth);
+
+
+  useEffect(()=>{
+    if(userInfo){
+      navigate('/');
     }
-  }, [])
+  },[navigate,userInfo])
 
+
+  
 
   const submitHandler = async (e) => {
 
     //prevent refreshing the page after submitting the form
-    e.preventDefault()
-
-    //console.log(email,password)
+    e.preventDefault();
 
     try {
 
-      const config = {
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-      setLoading(true)
-
-      const { data } = await axios.post('http://localhost:5555/auth/login',
-        {
-          email,
-          password,
-        },
-        config
-      )
-
-      console.log(data)
-      localStorage.setItem("userInfo", JSON.stringify(data))
-      setLoading(false)
-
-    } catch (error) {
-      setError(error.response.data.message)
+      const res = await login({email,password}).unwrap();
+      dispatch(setCredentials({...res}));
+      navigate('/')
+    } catch (err) {
+     /* console.log(err?.data?.message || err.error) */
+     enqueueSnackbar('Invalid Email or password',{variant:'error'})
     }
+
+    
   }
 
   return (
@@ -68,7 +68,7 @@ const Login = () => {
           <div className="auth-header-logo">
             <img src="" alt="" className="auth-header-logo-img" />
           </div>
-          <h1 className="auth-header-title">Welcome to CDAZZDEV</h1>
+          <h1 className="auth-header-title">Welcome to BookHub</h1>
           <p className="auth-header-subtitle">
             Sign-in to your account and start the adventure
           </p>
@@ -107,11 +107,11 @@ const Login = () => {
               />
             </div>
             <div className="flex-end">
-              <Link to={"/auth/forgot-password"} className="link-end">
+              <Link to={"/auth/forgot-password"} className="link-end" style={{pointerEvents: "none"}}>
                 Forgot password?
               </Link>
             </div>
-            <button type="submit" className="btn-submit">
+            <button type="submit" className="btn-submit" >
               Sign in
             </button>
           </form>
